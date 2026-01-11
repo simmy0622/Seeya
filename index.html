@@ -4,66 +4,46 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Seeya.ai</title>
-  <meta name="description" content="Seeya.ai：把电脑上已经发生的行为，整理成可复用的总结/校准/检查补全产物。" />
   <style>
     :root{
-      --paper:#fbf7ef;
-      --ink:#0f0f0f;
-      --graphite:#202020;
-      --muted:rgba(0,0,0,.65);
-      --hair:rgba(0,0,0,.14);
-      --card:rgba(255,255,255,.62);
-      --shadow: 10px 10px 0 rgba(0,0,0,.09);
-      --r:22px;
+      --paper:#fbf8f1;
+      --ink:#111;
+      --muted:rgba(0,0,0,.62);
+      --hair:rgba(0,0,0,.12);
+      --card:rgba(255,255,255,.55);
+      --r:26px;
       --max: 1120px;
-      --pad: clamp(18px, 4vw, 44px);
+      --pad: clamp(18px, 4vw, 54px);
       --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
       --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
     }
-
     *{box-sizing:border-box}
-    html, body { height:100%; }
+    html,body{height:100%}
     body{
       margin:0;
       font-family:var(--sans);
       color:var(--ink);
-      background: var(--paper);
-      overflow-y: auto;
-      scroll-snap-type: y mandatory;
+      background:var(--paper);
+      overflow-y:auto;
+      scroll-snap-type:y mandatory;
     }
-
-    /* paper texture */
     body:before{
       content:"";
       position:fixed; inset:0;
       background:
-        radial-gradient(1200px 800px at 15% 0%, rgba(0,0,0,.04), transparent 60%),
+        radial-gradient(1100px 800px at 20% 0%, rgba(0,0,0,.04), transparent 60%),
         radial-gradient(900px 700px at 85% 20%, rgba(0,0,0,.03), transparent 58%),
-        repeating-linear-gradient(0deg, rgba(0,0,0,.018), rgba(0,0,0,.018) 1px, transparent 1px, transparent 7px),
-        repeating-linear-gradient(90deg, rgba(0,0,0,.012), rgba(0,0,0,.012) 1px, transparent 1px, transparent 12px);
+        repeating-linear-gradient(0deg, rgba(0,0,0,.012), rgba(0,0,0,.012) 1px, transparent 1px, transparent 8px);
       pointer-events:none;
       z-index:-2;
-      filter: contrast(105%) saturate(95%);
     }
 
-    /* subtle vignette */
-    body:after{
-      content:"";
-      position:fixed; inset:-60px;
-      background: radial-gradient(closest-side, transparent 62%, rgba(0,0,0,.10));
-      pointer-events:none;
-      z-index:-3;
-      opacity:.30;
-    }
-
-    /* fixed top bar */
     .topbar{
-      position:fixed;
-      left:0; right:0; top:0;
-      z-index:20;
+      position:fixed; left:0; right:0; top:0;
+      z-index:30;
+      background: rgba(251,248,241,.78);
       backdrop-filter: blur(10px);
-      background: rgba(251,247,239,.72);
-      border-bottom:1px solid rgba(0,0,0,.06);
+      border-bottom: 1px solid rgba(0,0,0,.06);
     }
     .topbar .inner{
       max-width:var(--max);
@@ -74,40 +54,24 @@
       justify-content:space-between;
       gap:14px;
     }
-
     .brand{
-      display:flex;
-      align-items:center;
-      gap:12px;
+      font-weight:950;
+      letter-spacing:.2px;
       text-decoration:none;
       color:inherit;
-      min-width: 180px;
-    }
-    .mark{
-      width:44px; height:44px;
-      border:2px solid rgba(0,0,0,.22);
-      border-radius: 16px;
-      background: rgba(255,255,255,.55);
-      box-shadow: 6px 6px 0 rgba(0,0,0,.10);
-      display:grid; place-items:center;
       font-size:18px;
-      user-select:none;
+      line-height:1.1;
     }
-    .brand strong{ font-weight:900; letter-spacing:.2px; }
     .brand small{
       display:block;
-      margin-top:2px;
       font-family:var(--mono);
+      font-weight:650;
       font-size:12px;
       color:var(--muted);
+      margin-top:6px;
     }
-
     .nav{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      flex-wrap:wrap;
-      justify-content:flex-end;
+      display:flex; gap:10px; align-items:center; flex-wrap:wrap; justify-content:flex-end;
     }
     .pill{
       font-family:var(--mono);
@@ -116,84 +80,75 @@
       border:1px dashed rgba(0,0,0,.22);
       border-radius:999px;
       color:rgba(0,0,0,.70);
-      background: rgba(255,255,255,.20);
+      background: rgba(255,255,255,.18);
       user-select:none;
     }
     .btn{
-      display:inline-flex;
-      align-items:center;
-      gap:10px;
+      display:inline-flex; align-items:center; gap:10px;
       padding: 10px 14px;
-      border:2px solid rgba(0,0,0,.22);
+      border:2px solid rgba(0,0,0,.20);
       border-radius: 999px;
       text-decoration:none;
       color:inherit;
-      font-weight:800;
-      background: rgba(255,255,255,.55);
-      box-shadow: 6px 6px 0 rgba(0,0,0,.10);
+      font-weight:950;
+      background: rgba(255,255,255,.50);
+      box-shadow: 10px 10px 0 rgba(0,0,0,.08);
       transition: transform .12s ease, box-shadow .12s ease;
       white-space:nowrap;
       user-select:none;
     }
-    .btn:hover{ transform: translate(-1px,-1px); box-shadow: 8px 8px 0 rgba(0,0,0,.12); }
+    .btn:hover{ transform: translate(-1px,-1px); box-shadow: 12px 12px 0 rgba(0,0,0,.10); }
     .btn.secondary{ background: transparent; box-shadow:none; }
 
-    /* sections */
-    main{ padding-top: 84px; }
+    main{ padding-top: 78px; }
     section.page{
-      scroll-snap-align: start;
-      min-height: 100vh;
+      scroll-snap-align:start;
+      min-height:100vh;
       display:flex;
       align-items:center;
-      padding: clamp(56px, 8vh, 120px) var(--pad);
+      padding: clamp(64px, 9vh, 132px) var(--pad);
     }
-    .wrap{
-      width:100%;
-      max-width:var(--max);
-      margin:0 auto;
-    }
+    .wrap{ width:100%; max-width:var(--max); margin:0 auto; }
 
     .grid{
       display:grid;
-      grid-template-columns: 1.1fr .9fr;
-      gap: clamp(22px, 4vw, 64px);
+      grid-template-columns: 1.05fr .95fr;
+      gap: clamp(26px, 5vw, 84px);
       align-items:center;
     }
-    @media (max-width: 980px){
-      .grid{ grid-template-columns:1fr; }
-    }
+    @media (max-width: 980px){ .grid{ grid-template-columns:1fr; } }
 
     h1{
-      margin:0 0 14px;
-      font-size: clamp(44px, 4.8vw, 72px);
-      line-height: 1.02;
-      letter-spacing: -0.9px;
+      margin:0 0 16px;
+      font-size: clamp(44px, 5.2vw, 76px);
+      line-height: 1.01;
+      letter-spacing: -1px;
     }
     h2{
       margin:0 0 12px;
-      font-size: clamp(28px, 2.6vw, 40px);
-      letter-spacing:-.4px;
+      font-size: clamp(30px, 2.8vw, 44px);
+      letter-spacing:-.6px;
       line-height:1.06;
     }
     p{
       margin:0 0 14px;
       font-size: 18px;
       color: rgba(0,0,0,.78);
-      max-width: 64ch;
+      max-width: 66ch;
     }
     .sub{
       font-family:var(--mono);
       font-size:12px;
-      color: rgba(0,0,0,.62);
-      margin-top: 8px;
+      color: var(--muted);
+      margin-top: 10px;
     }
 
     .card{
-      border:2px solid rgba(0,0,0,.20);
+      border:2px solid rgba(0,0,0,.18);
       border-radius: var(--r);
       background: var(--card);
-      box-shadow: var(--shadow);
-      padding: 18px 18px 16px;
+      box-shadow: 12px 12px 0 rgba(0,0,0,.08);
+      padding: clamp(16px, 2.5vw, 22px);
       position:relative;
       overflow:hidden;
     }
@@ -201,53 +156,24 @@
       content:"";
       position:absolute; inset:-2px;
       border:2px dashed rgba(0,0,0,.10);
-      border-radius: calc(var(--r) + 6px);
-      transform: rotate(-.25deg);
+      border-radius: calc(var(--r) + 8px);
       pointer-events:none;
+      transform: rotate(-.18deg);
     }
 
-    .cols3{
-      display:grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 16px;
-    }
-    @media (max-width: 980px){
-      .cols3{ grid-template-columns: 1fr; }
-    }
-    .mini{
-      border:1px solid rgba(0,0,0,.16);
-      border-radius: 18px;
-      padding:16px;
-      background: rgba(255,255,255,.35);
-    }
-    .k{
-      font-family:var(--mono);
-      font-size:12px;
-      color: rgba(0,0,0,.70);
-    }
-    .t{
-      font-weight:900;
-      margin: 8px 0 8px;
-      font-size: 20px;
-      letter-spacing:-.2px;
-    }
-    .m{ color: var(--muted); margin:0; font-size: 15px; }
-
-    /* side dots */
     .dots{
       position:fixed;
-      right: 18px;
+      right: 16px;
       top: 50%;
       transform: translateY(-50%);
-      z-index:30;
+      z-index:40;
       display:flex;
       flex-direction:column;
       gap:10px;
       padding: 10px 8px;
       border:1px solid rgba(0,0,0,.10);
       border-radius: 999px;
-      background: rgba(255,255,255,.35);
+      background: rgba(255,255,255,.30);
       backdrop-filter: blur(10px);
     }
     .dot{
@@ -258,21 +184,15 @@
       cursor:pointer;
       padding:0;
     }
-    .dot.active{
-      background: rgba(0,0,0,.65);
-      border-color: rgba(0,0,0,.65);
-    }
+    .dot.active{ background: rgba(0,0,0,.65); border-color: rgba(0,0,0,.65); }
 
-    /* HANDWRITE ANIMATIONS (replay on page enter by cloning) */
-    svg[data-draw] { width:100%; height:auto; display:block; }
+    /* pencil draw */
+    svg[data-draw]{ width:100%; height:auto; display:block; }
     .stroke{
       fill:none;
-      stroke: var(--graphite);
+      stroke: #111;
       stroke-linecap: round;
       stroke-linejoin: round;
-    }
-    .stroke.mask{
-      stroke: #fff;
     }
     .draw{
       stroke-dasharray: var(--len);
@@ -282,30 +202,36 @@
     }
     @keyframes drawLine { to{ stroke-dashoffset: 0; } }
 
-    .pop{
-      transform: scale(0);
-      transform-origin:center;
-      animation: popIn 260ms ease forwards;
+    .fadeIn{
+      opacity:0;
+      animation: fadeIn 420ms ease forwards;
       animation-delay: var(--delay);
     }
-    @keyframes popIn { to{ transform: scale(1); } }
+    @keyframes fadeIn { to{ opacity:1; } }
 
-    /* small underline doodle */
-    .underline{
-      height: 22px;
-      margin-top: 10px;
-      opacity:.9;
+    .cols3{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 18px;
     }
+    @media (max-width: 980px){ .cols3{ grid-template-columns:1fr; } }
+    .mini{
+      border:1px solid rgba(0,0,0,.16);
+      border-radius: 20px;
+      padding:16px;
+      background: rgba(255,255,255,.30);
+    }
+    .k{ font-family:var(--mono); font-size:12px; color: rgba(0,0,0,.70); }
+    .t{ font-weight:950; margin: 8px 0 8px; font-size: 20px; letter-spacing:-.2px; }
+    .m{ color: var(--muted); margin:0; font-size: 15px; }
 
-    /* CTA block spacing */
-    .ctaRow{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top: 10px; }
-
-    /* footer-ish */
+    .ctaRow{ display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top: 12px; }
     .foot{
       margin-top: 22px;
       font-family:var(--mono);
       font-size:12px;
-      color: rgba(0,0,0,.62);
+      color: var(--muted);
       display:flex;
       gap:14px;
       flex-wrap:wrap;
@@ -313,22 +239,27 @@
     .foot a{ color:inherit; text-decoration:none; border-bottom:1px dashed rgba(0,0,0,.25); }
     .foot a:hover{ border-bottom-style:solid; }
 
+    .logoHint{
+      text-align:center;
+      font-family:var(--mono);
+      font-size:12px;
+      color: var(--muted);
+      margin-top: 10px;
+    }
+
+    .spacerLine{
+      margin-top: 16px;
+      opacity:.85;
+    }
   </style>
 </head>
 <body>
 
   <div class="topbar">
     <div class="inner">
-      <a class="brand" href="#p1" aria-label="Seeya.ai">
-        <div class="mark">👁</div>
-        <div>
-          <strong>Seeya.ai</strong>
-          <small>pencil-drawn productivity</small>
-        </div>
-      </a>
-
+      <a class="brand" href="#p1">Seeya.ai<small>pencil · local-first · user-led</small></a>
       <div class="nav">
-        <span class="pill">macOS 13+ · Private Beta</span>
+        <span class="pill">macOS 13+ · Beta</span>
         <a class="btn secondary" href="#p3">How</a>
         <a class="btn" href="#p5">Download</a>
       </div>
@@ -345,121 +276,117 @@
 
   <main>
     <!-- Page 1 -->
-    <section class="page" id="p1">
+    <section class="page" id="p1" data-replay>
       <div class="wrap">
         <div class="grid">
           <div>
-            <h1>把过去 20 分钟<br>变成可复用的产物。</h1>
+            <h1>把刚刚发生的事<br>整理成可复用产物。</h1>
             <p>
-              Seeya.ai 不说教，不抢注意力。你点一下“标记完成”，它把刚刚发生在电脑上的行为整理成：
+              Seeya.ai 是菜单栏工具。你自己点“标记完成”，它把过去 10/20 分钟的电脑行为整理成
               <b>总结</b>、<b>校准</b>、<b>检查补全</b>。
             </p>
             <div class="ctaRow">
               <a class="btn" href="#p5">下载 macOS Beta</a>
-              <a class="btn secondary" href="#" id="replayAll">重播本页动画</a>
+              <a class="btn secondary" href="#" id="replayP1">重播本页手写</a>
             </div>
-            <div class="sub">Menu Bar 常驻 · 用户主导触发 · 本地优先存储</div>
+            <div class="sub">铅笔简笔画 · 黑白 · 不说教 · 用户主导</div>
           </div>
 
-          <div class="card" data-replay-scope>
-            <!-- EXACT LOGO (from your image) + mask draw reveal -->
-            <svg data-draw id="logo1" viewBox="0 0 677 519" role="img" aria-label="Seeya.ai logo draw">
+          <div class="card" data-anim-scope>
+            <!-- LOGO: use your exact seeya-logo.png in same folder -->
+            <svg data-draw viewBox="0 0 1536 1024" role="img" aria-label="Seeya.ai logo draw">
               <defs>
-                <mask id="mLogo1">
-                  <rect x="0" y="0" width="677" height="519" fill="#000"></rect>
+                <mask id="seeyaMask">
+                  <rect x="0" y="0" width="1536" height="1024" fill="#000"></rect>
 
-                  <!-- eye reveal strokes (approx paths; final image is exact) -->
-                  <path class="stroke mask draw" data-len data-dur="0.9" data-delay="0.05" stroke-width="34"
-                        d="M115,172 C215,95 360,78 498,110 C562,125 618,140 660,160" />
-                  <path class="stroke mask draw" data-len data-dur="0.9" data-delay="0.30" stroke-width="30"
-                        d="M170,220 C292,268 420,266 542,220 C590,202 628,188 660,172" />
-                  <path class="stroke mask draw" data-len data-dur="0.7" data-delay="0.50" stroke-width="30"
-                        d="M235,150 C300,118 378,118 440,150" />
-                  <path class="stroke mask draw" data-len data-dur="0.7" data-delay="0.62" stroke-width="30"
-                        d="M292,172 C320,148 356,140 392,150 C424,160 446,180 452,204" />
+                  <!-- Pencil reveal strokes (white in mask) -->
+                  <!-- eye -->
+                  <path class="stroke draw" data-len data-dur="0.85" data-delay="0.08" stroke="#fff" stroke-width="34"
+                        d="M510,338 C650,250 880,250 1010,330" />
+                  <path class="stroke draw" data-len data-dur="0.80" data-delay="0.24" stroke="#fff" stroke-width="30"
+                        d="M560,382 C700,450 890,450 1015,384" />
+                  <path class="stroke draw" data-len data-dur="0.65" data-delay="0.38" stroke="#fff" stroke-width="26"
+                        d="M740,312 C805,285 870,285 925,312" />
+                  <path class="stroke draw" data-len data-dur="0.70" data-delay="0.50" stroke="#fff" stroke-width="26"
+                        d="M820,330 C850,312 890,316 910,346 C924,370 914,402 892,416" />
+                  <path class="stroke draw" data-len data-dur="0.55" data-delay="0.64" stroke="#fff" stroke-width="24"
+                        d="M820,356 C860,332 902,338 922,372 C944,410 912,442 870,440 C840,438 820,412 828,390" />
 
-                  <!-- text reveal strokes -->
-                  <path class="stroke mask draw" data-len data-dur="1.0" data-delay="0.85" stroke-width="38"
-                        d="M150,372 C250,350 340,348 460,360 C560,370 618,378 660,390" />
-                  <path class="stroke mask draw" data-len data-dur="0.8" data-delay="1.10" stroke-width="34"
-                        d="M165,410 C260,438 360,440 470,430 C560,422 625,415 665,408" />
+                  <!-- text -->
+                  <path class="stroke draw" data-len data-dur="0.95" data-delay="0.82" stroke="#fff" stroke-width="34"
+                        d="M500,612 C620,550 760,548 910,590 C1010,618 1068,628 1120,640" />
+                  <path class="stroke draw" data-len data-dur="0.85" data-delay="1.02" stroke="#fff" stroke-width="30"
+                        d="M520,668 C680,706 860,706 1010,676 C1080,662 1125,652 1160,646" />
                 </mask>
               </defs>
 
-              <!-- image revealed by mask -->
-              <image id="logoImg1" x="0" y="0" width="677" height="519"
-                     mask="url(#mLogo1)"></image>
+              <image href="./seeya-logo.png" x="0" y="0" width="1536" height="1024"
+                     mask="url(#seeyaMask)"></image>
 
-              <!-- subtle “ink pass” overlay (optional) -->
-              <path class="stroke draw" data-len data-dur="0.6" data-delay="1.45" stroke-width="2.4"
-                    d="M120,456 C260,476 420,478 610,456" opacity=".35"/>
-
-              <!-- soft confirm underline under the logo -->
-              <path class="stroke draw" data-len data-dur="0.6" data-delay="1.62" stroke-width="2.8"
-                    d="M190,486 C310,504 420,504 540,486" opacity=".28"/>
+              <!-- Final exact image fade in (guarantee perfect match) -->
+              <image class="fadeIn" style="--delay:1.38s"
+                     href="./seeya-logo.png" x="0" y="0" width="1536" height="1024"></image>
             </svg>
 
-            <div class="sub" style="text-align:center;margin-top:10px;">
-              眼睛 → “Seeya.ai” 手写揭示动画（最终图案严格一致）
-            </div>
+            <div class="logoHint">先“铅笔揭示”，再完整显示原图（严格一致）</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Page 2 -->
-    <section class="page" id="p2">
-      <div class="wrap">
-        <h2>它输出什么？</h2>
-        <p class="muted">不是“提醒你该做什么”，而是把你已经做过的事情收敛成可复用产物。</p>
+    <section class="page" id="p2" data-replay>
+      <div class="wrap" data-anim-scope>
+        <h2>输出不是“提醒”，是“产物”。</h2>
+        <p>你做完了，Seeya.ai 把它变成可复制、可保存、可复用的卡片。</p>
 
-        <!-- underline doodle -->
-        <svg class="underline" data-draw viewBox="0 0 720 60" aria-hidden="true" data-replay-scope>
-          <path class="stroke draw" data-len data-dur="0.8" data-delay="0.05" stroke-width="6"
-                d="M20,34 C140,10 240,10 360,34 C500,62 600,60 700,28" opacity=".55"/>
-          <path class="stroke draw" data-len data-dur="0.7" data-delay="0.18" stroke-width="3"
-                d="M22,40 C170,66 300,64 420,40 C540,18 640,18 700,38" opacity=".30"/>
+        <svg class="spacerLine" data-draw viewBox="0 0 860 80" aria-hidden="true">
+          <path class="stroke draw" data-len data-dur="0.9" data-delay="0.08" stroke-width="6"
+                d="M20,44 C170,14 320,14 460,44 C610,78 720,72 840,34" opacity=".55"/>
+          <path class="stroke draw" data-len data-dur="0.8" data-delay="0.22" stroke-width="3"
+                d="M24,52 C200,84 350,78 500,50 C650,24 740,26 840,50" opacity=".26"/>
         </svg>
 
         <div class="cols3">
-          <div class="mini card" data-replay-scope>
+          <div class="mini">
             <div class="k">01 / summarize</div>
-            <div class="t">视频 / 阅读要点</div>
-            <p class="m">看完长视频、读完文章，自动整理要点与可引用句。</p>
+            <div class="t">视频 / 文章要点</div>
+            <p class="m">看完就出要点、结构、可引用句。</p>
             <svg data-draw viewBox="0 0 220 120" aria-hidden="true" style="margin-top:12px;">
-              <path class="stroke draw" data-len data-dur="0.7" data-delay="0.08" stroke-width="4"
-                    d="M34,26 C72,14 106,14 142,26 C166,34 186,44 196,54" opacity=".75"/>
-              <path class="stroke draw" data-len data-dur="0.7" data-delay="0.18" stroke-width="4"
-                    d="M30,44 C70,34 106,34 144,44 C170,52 188,62 198,72" opacity=".75"/>
-              <path class="stroke draw" data-len data-dur="0.6" data-delay="0.30" stroke-width="4"
-                    d="M34,68 C80,56 120,56 168,68" opacity=".60"/>
+              <path class="stroke draw" data-len data-dur="0.65" data-delay="0.08" stroke-width="4"
+                    d="M36,30 C78,16 114,16 152,30 C176,38 194,48 202,58" opacity=".75"/>
+              <path class="stroke draw" data-len data-dur="0.60" data-delay="0.18" stroke-width="4"
+                    d="M34,48 C76,38 114,38 154,48 C178,56 196,66 204,76" opacity=".70"/>
+              <path class="stroke draw" data-len data-dur="0.55" data-delay="0.28" stroke-width="4"
+                    d="M38,74 C92,62 136,62 182,74" opacity=".55"/>
             </svg>
           </div>
 
-          <div class="mini card" data-replay-scope>
+          <div class="mini">
             <div class="k">02 / calibrate</div>
-            <div class="t">新闻校准</div>
-            <p class="m">浏览多个来源后，提炼共识与分歧，给一句校准结论。</p>
+            <div class="t">多网页校准</div>
+            <p class="m">提炼共识/分歧，给一句校准结论。</p>
             <svg data-draw viewBox="0 0 220 120" aria-hidden="true" style="margin-top:12px;">
-              <path class="stroke draw" data-len data-dur="0.8" data-delay="0.08" stroke-width="4"
-                    d="M40,70 C64,40 90,28 120,32 C150,36 170,52 182,70" opacity=".72"/>
-              <path class="stroke draw" data-len data-dur="0.6" data-delay="0.22" stroke-width="4"
-                    d="M60,74 C90,86 122,86 156,74" opacity=".55"/>
-              <circle class="pop" style="--delay:0.38s" cx="120" cy="56" r="6" fill="rgba(0,0,0,.68)"></circle>
+              <path class="stroke draw" data-len data-dur="0.72" data-delay="0.08" stroke-width="4"
+                    d="M42,72 C66,42 94,30 124,34 C154,38 174,54 186,72" opacity=".72"/>
+              <path class="stroke draw" data-len data-dur="0.55" data-delay="0.22" stroke-width="4"
+                    d="M64,76 C96,88 130,88 160,76" opacity=".50"/>
+              <path class="stroke draw" data-len data-dur="0.45" data-delay="0.32" stroke-width="4"
+                    d="M110,56 C116,56 130,56 136,56" opacity=".65"/>
             </svg>
           </div>
 
-          <div class="mini card" data-replay-scope>
+          <div class="mini">
             <div class="k">03 / check</div>
-            <div class="t">文档检查补全</div>
-            <p class="m">写完邮件/文档/PPT，检查缺失项并给“可选补充”。</p>
+            <div class="t">写作检查补全</div>
+            <p class="m">缺失项、逻辑断点、可选补充一键给出。</p>
             <svg data-draw viewBox="0 0 220 120" aria-hidden="true" style="margin-top:12px;">
-              <path class="stroke draw" data-len data-dur="0.7" data-delay="0.08" stroke-width="4"
+              <path class="stroke draw" data-len data-dur="0.65" data-delay="0.08" stroke-width="4"
                     d="M54,62 L88,88 L166,36" opacity=".78"/>
-              <path class="stroke draw" data-len data-dur="0.7" data-delay="0.20" stroke-width="4"
-                    d="M44,28 H176" opacity=".32"/>
-              <path class="stroke draw" data-len data-dur="0.7" data-delay="0.26" stroke-width="4"
-                    d="M44,44 H150" opacity=".22"/>
+              <path class="stroke draw" data-len data-dur="0.55" data-delay="0.20" stroke-width="4"
+                    d="M44,28 H176" opacity=".30"/>
+              <path class="stroke draw" data-len data-dur="0.55" data-delay="0.26" stroke-width="4"
+                    d="M44,44 H152" opacity=".22"/>
             </svg>
           </div>
         </div>
@@ -467,23 +394,23 @@
     </section>
 
     <!-- Page 3 -->
-    <section class="page" id="p3">
+    <section class="page" id="p3" data-replay>
       <div class="wrap">
         <div class="grid">
           <div>
-            <h2>怎么用？就三步。</h2>
-            <p class="muted">Seeya 始终是工具。你在需要的时候叫它，它负责把“这段时间”整理清楚。</p>
+            <h2>怎么用？三步，很轻。</h2>
+            <p>Seeya.ai 记录“元数据时间线”。你触发“标记完成”，它才生成产物。</p>
 
             <div class="cols3" style="margin-top:18px;">
               <div class="mini">
                 <div class="k">step 1</div>
                 <div class="t">正常做事</div>
-                <p class="m">记录元数据时间线：App/窗口标题/时长/活动状态。</p>
+                <p class="m">记录：App / 窗口标题 / 时长 / 活动状态。</p>
               </div>
               <div class="mini">
                 <div class="k">step 2</div>
                 <div class="t">标记完成</div>
-                <p class="m">菜单栏点一下：最近 10/20 分钟或自定义范围。</p>
+                <p class="m">菜单栏点一下：最近 10/20 分钟或自定义。</p>
               </div>
               <div class="mini">
                 <div class="k">step 3</div>
@@ -491,82 +418,82 @@
                 <p class="m">复制、保存、删除。你完全主导。</p>
               </div>
             </div>
+            <div class="sub">V1 重点：轻交互 + 可复用产物</div>
           </div>
 
-          <div class="card" data-replay-scope>
-            <div class="k">timeline sketch</div>
+          <div class="card" data-anim-scope>
+            <div class="k">session timeline · pencil sketch</div>
             <svg data-draw viewBox="0 0 520 240" aria-hidden="true" style="margin-top:12px;">
-              <path class="stroke draw" data-len data-dur="0.9" data-delay="0.05" stroke-width="6"
+              <path class="stroke draw" data-len data-dur="0.95" data-delay="0.08" stroke-width="6"
                     d="M40,120 C130,60 210,60 300,120 C380,174 440,174 480,138" opacity=".70"/>
-              <path class="stroke draw" data-len data-dur="0.6" data-delay="0.22" stroke-width="6"
+              <path class="stroke draw" data-len data-dur="0.65" data-delay="0.26" stroke-width="6"
                     d="M470,128 L495,140 L468,152" opacity=".70"/>
-              <path class="stroke draw" data-len data-dur="0.8" data-delay="0.42" stroke-width="4"
-                    d="M70,170 C140,198 210,198 280,170" opacity=".35"/>
-              <path class="stroke draw" data-len data-dur="0.8" data-delay="0.56" stroke-width="4"
-                    d="M240,62 C280,36 330,36 370,62" opacity=".35"/>
+              <path class="stroke draw" data-len data-dur="0.80" data-delay="0.44" stroke-width="4"
+                    d="M70,170 C140,198 210,198 280,170" opacity=".32"/>
+              <path class="stroke draw" data-len data-dur="0.80" data-delay="0.58" stroke-width="4"
+                    d="M240,62 C280,36 330,36 370,62" opacity=".26"/>
             </svg>
-            <div class="sub">进入本页自动手写一条 “session timeline”</div>
+            <div class="sub">每次进入页面都会重新“画一遍”</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Page 4 -->
-    <section class="page" id="p4">
+    <section class="page" id="p4" data-replay>
       <div class="wrap">
         <div class="grid">
-          <div class="card" data-replay-scope>
-            <div class="k">privacy sketch</div>
+          <div class="card" data-anim-scope>
+            <div class="k">privacy · pencil lock</div>
             <svg data-draw viewBox="0 0 520 260" aria-hidden="true" style="margin-top:10px;">
-              <!-- lock -->
-              <path class="stroke draw" data-len data-dur="0.7" data-delay="0.06" stroke-width="6"
+              <path class="stroke draw" data-len data-dur="0.70" data-delay="0.08" stroke-width="6"
                     d="M190,120 C190,78 220,54 260,54 C300,54 330,78 330,120" opacity=".78"/>
-              <path class="stroke draw" data-len data-dur="0.8" data-delay="0.18" stroke-width="6"
+              <path class="stroke draw" data-len data-dur="0.85" data-delay="0.22" stroke-width="6"
                     d="M170,120 H350 V220 H170 Z" opacity=".78"/>
-              <circle class="pop" style="--delay:0.38s" cx="260" cy="170" r="10" fill="rgba(0,0,0,.66)"></circle>
-              <path class="stroke draw" data-len data-dur="0.6" data-delay="0.42" stroke-width="4"
-                    d="M80,238 C160,220 240,220 320,238 C400,256 460,254 500,240" opacity=".30"/>
+              <path class="stroke draw" data-len data-dur="0.55" data-delay="0.42" stroke-width="4"
+                    d="M250,170 C256,160 266,160 270,170 C276,180 270,192 260,196 C250,192 244,180 250,170" opacity=".65"/>
+              <path class="stroke draw" data-len data-dur="0.75" data-delay="0.58" stroke-width="4"
+                    d="M80,238 C160,220 240,220 320,238 C400,256 460,254 500,240" opacity=".22"/>
             </svg>
           </div>
 
           <div>
             <h2>隐私与主导权</h2>
-            <p class="muted">V1 逻辑就是“元数据时间线 + 用户触发 + 产物”。没有持续弹窗，没有强行教育。</p>
+            <p>V1 不做 24/7 全屏 OCR。默认只用元数据时间线，用户触发才生成总结。</p>
 
             <div class="cols3" style="margin-top:18px;">
               <div class="mini">
                 <div class="k">control</div>
                 <div class="t">用户绝对主导</div>
-                <p class="m">只有你点“标记完成”，才生成总结产物。</p>
+                <p class="m">你点“标记完成”才会生成产物。</p>
               </div>
               <div class="mini">
                 <div class="k">local-first</div>
                 <div class="t">本地优先</div>
-                <p class="m">默认本地存储，可随时清空/导出。</p>
+                <p class="m">本地存储，可随时清空/导出。</p>
               </div>
               <div class="mini">
                 <div class="k">minimal</div>
                 <div class="t">尽量少的数据</div>
-                <p class="m">V1 以 App/窗口标题/时长为主，不做 24/7 全屏 OCR。</p>
+                <p class="m">App/窗口标题/时长为主，足够成立。</p>
               </div>
             </div>
-
-            <div class="sub">这一页的手写动画是“锁 + 纸上划线”</div>
+            <div class="sub">黑白铅笔简笔画风，刻意不“科技感”</div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- Page 5 -->
-    <section class="page" id="p5">
+    <section class="page" id="p5" data-replay>
       <div class="wrap">
         <div class="grid">
           <div>
             <h2>下载与试用</h2>
-            <p class="muted">先 macOS，再 Windows。官网分发（可后续加自动更新）。</p>
+            <p>先 macOS（官网分发 + 自动更新），再 Windows。</p>
 
             <div class="ctaRow" style="margin-top:16px;">
-              <a class="btn" href="#" onclick="alert('TODO: 替换成你的 .dmg 下载链接'); return false;">Download for macOS (.dmg)</a>
+              <a class="btn" href="#" onclick="alert('TODO: 替换成你的 .dmg 下载链接'); return false;">Download macOS (.dmg)</a>
               <a class="btn secondary" href="#" onclick="alert('TODO: 替换成你的 waitlist / 联系方式'); return false;">Join waitlist</a>
             </div>
 
@@ -577,19 +504,19 @@
             </div>
           </div>
 
-          <div class="card" data-replay-scope>
-            <div class="k">download sketch</div>
+          <div class="card" data-anim-scope>
+            <div class="k">download · pencil</div>
             <svg data-draw viewBox="0 0 520 260" aria-hidden="true" style="margin-top:10px;">
-              <path class="stroke draw" data-len data-dur="0.8" data-delay="0.06" stroke-width="6"
+              <path class="stroke draw" data-len data-dur="0.85" data-delay="0.08" stroke-width="6"
                     d="M260,50 V150" opacity=".80"/>
-              <path class="stroke draw" data-len data-dur="0.6" data-delay="0.20" stroke-width="6"
+              <path class="stroke draw" data-len data-dur="0.65" data-delay="0.26" stroke-width="6"
                     d="M220,118 L260,158 L300,118" opacity=".80"/>
-              <path class="stroke draw" data-len data-dur="0.8" data-delay="0.34" stroke-width="6"
-                    d="M150,190 H370" opacity=".65"/>
-              <path class="stroke draw" data-len data-dur="0.9" data-delay="0.50" stroke-width="4"
-                    d="M110,230 C180,210 240,210 310,230 C380,250 440,248 500,226" opacity=".30"/>
+              <path class="stroke draw" data-len data-dur="0.85" data-delay="0.44" stroke-width="6"
+                    d="M150,190 H370" opacity=".62"/>
+              <path class="stroke draw" data-len data-dur="0.90" data-delay="0.60" stroke-width="4"
+                    d="M110,230 C180,210 240,210 310,230 C380,250 440,248 500,226" opacity=".22"/>
             </svg>
-            <div class="sub">这一页的手写动画是“下载箭头 + 签名线”</div>
+            <div class="sub">最后一页也有手写动画</div>
           </div>
         </div>
       </div>
@@ -597,16 +524,7 @@
   </main>
 
   <script>
-    // Embedded logo image (cropped from your provided reference) as WebP data URI.
-    // If you want to replace: set LOGO_DATA_URI to your own.
-    const LOGO_DATA_URI =
-      "data:image/webp;base64,UklGRnRBAABXRUJQVlA4IGhBAACQLAGdASqlAgcCPm0wlkikIqIhIrAqeIANiWlu/G8O0ZueVfY9Scpuu2Kf1nK2Y1dB3pg6w4zH5p0f9xchhU0Qj1lQ2f6cTtqK1xGx1f+H3M9S3C1o6M8j0iC+fN+1C2c0Yx9Z9m4wFj3fG0D7PpG+zqk0lS0mH3qkKzX1rYH0u3oI0c0SxQw3YvYqg3dB6oZ0m2rJ9l1gZ+o9J7xvI8XxX9uQJd9jT7oQbqv4o2W6H2HqGx8c2L3iRjG0mQKqgQm2S8XrQ0y9tC1h5f6v4d0yKp5j3kCq5B8G6p+Kxk8lP8fY1m8y7eYh7XzC9Gm2Y0i+2mQv+KqgD8NQ0o3lZfRjCw7QvN0S9oXb5e2Y0S8t9V8r7bYc0c0WZlY3kWQq8z3W0gF0VJpS0mXQpQv8KJd0EAAAAA";
-
-    // Set logo image href
-    const img = document.getElementById("logoImg1");
-    if (img) img.setAttribute("href", LOGO_DATA_URI);
-
-    // Setup side dots navigation
+    // dots navigation
     document.querySelectorAll(".dot").forEach(btn=>{
       btn.addEventListener("click", ()=>{
         const id = btn.getAttribute("data-to");
@@ -615,7 +533,6 @@
       });
     });
 
-    // Helper: compute path lengths & apply css vars
     function prepPath(p){
       try{
         const len = p.getTotalLength();
@@ -628,24 +545,20 @@
     }
 
     function prepAll(root=document){
-      root.querySelectorAll("path[data-len], path.draw").forEach(prepPath);
+      root.querySelectorAll("path.draw").forEach(prepPath);
     }
     prepAll();
 
-    // Replay drawing inside a scope by cloning it (reset animations)
-    function replayScope(scope){
-      const drawables = scope.querySelectorAll("svg[data-draw]");
-      drawables.forEach(svg=>{
+    // replay: clone svg in this page to restart animations
+    function replayPage(page){
+      page.querySelectorAll("svg[data-draw]").forEach(svg=>{
         const clone = svg.cloneNode(true);
         svg.parentNode.replaceChild(clone, svg);
       });
-      // re-bind image href in cloned logo
-      const newImg = scope.querySelector("#logoImg1");
-      if(newImg) newImg.setAttribute("href", LOGO_DATA_URI);
-      prepAll(scope);
+      prepAll(page);
     }
 
-    // Intersection: on page enter, replay all animations inside that page
+    // intersection: replay each page on enter + set dot active
     const pages = Array.from(document.querySelectorAll("section.page"));
     const dots = Array.from(document.querySelectorAll(".dot"));
 
@@ -655,22 +568,18 @@
           const page = en.target;
           const id = page.id;
 
-          // activate dot
-          dots.forEach(d=>d.classList.toggle("active", d.getAttribute("data-to")==id));
-
-          // replay animations for this page (more “handwritten each page” feel)
-          replayScope(page);
+          dots.forEach(d=>d.classList.toggle("active", d.getAttribute("data-to")===id));
+          replayPage(page);
         }
       });
     }, {threshold: 0.62});
-
     pages.forEach(p=>io.observe(p));
 
-    // Manual replay for page 1
-    document.getElementById("replayAll")?.addEventListener("click", (e)=>{
+    // manual replay page 1
+    document.getElementById("replayP1")?.addEventListener("click", (e)=>{
       e.preventDefault();
       const p1 = document.getElementById("p1");
-      if(p1) replayScope(p1);
+      if(p1) replayPage(p1);
     });
   </script>
 </body>
